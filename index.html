@@ -5,14 +5,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Favicon -->
-    <link rel="icon" href="./favicon_io/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="./img/favicon_io/favicon.ico" type="image/x-icon">
     <!-- FontAwesome CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
-
+    <!-- Css file -->
     <link rel="stylesheet" href="/index.css">
     <title>Task Management</title>
 </head>
@@ -29,20 +29,20 @@
                     </div>
                     <div class="left-aside-items">
                         <div class="active"> <i class="fas fa-exchange-alt active"></i></div>
-                        <div > <i class="fas fa-th-large"></i></div>
-                        <div > <i class="fas fa-user"></i></div>
-                        <div > <i class="fas fa-calendar-alt"></i></div>
-                        <div > <i class="fas fa-chart-bar"></i></div>
-                        <div > <i class="fas fa-cloud-upload-alt"></i></div>
-                        <div > <i class="fas fa-map"></i></div>
-                        <div > <i class="fas fa-sliders-h"></i></div>
-                        <div > <i class="fa-solid fa-arrow-right-from-bracket"></i></div>
+                        <div> <i class="fas fa-th-large"></i></div>
+                        <div> <i class="fas fa-user"></i></div>
+                        <div> <i class="fas fa-calendar-alt"></i></div>
+                        <div> <i class="fas fa-chart-bar"></i></div>
+                        <div> <i class="fas fa-cloud-upload-alt"></i></div>
+                        <div> <i class="fas fa-map"></i></div>
+                        <div> <i class="fas fa-sliders-h"></i></div>
+                        <div> <i class="fa-solid fa-arrow-right-from-bracket"></i></div>
                     </div>
                 </div>
                 <div class="right-aside">
                     <div class="right-aside-header">
                         <h2>Projects</h2>
-                        <i class="fa-solid fa-plus"></i>
+                        <i class="fa-solid fa-circle-plus"></i>
                     </div>
                 </div>
             </aside>
@@ -53,23 +53,105 @@
                     </div>
                     <div class="right-side">
                         <div class="search-bar">
-                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <input type="text" placeholder="Search..." id="search-box">
+                            <div id="search-container-icon">
+                                <i class="fa-solid fa-magnifying-glass" id="search-icon"></i>
+                            </div>
                         </div>
-                        <div class="notification"></div>
+                        <div class="notification">
                             <i class="fa-regular fa-bell"></i>
+                        </div>
                         <div class="calender">
                             <i class="fa-regular fa-calendar"></i>
+                            <span class="day">19 May 2020</span>
                         </div>
-                        <div class="profile"></div>
+                        <figure class="profile">
+                            <img src="./img/profile.jpeg" />
+                        </figure>
                     </div>
                 </header>
                 <div class="main-content-body">
-                    <div class="topbar"></div>
-                    <div class="main-content-body-content"></div>
+                    <div class="top-bar">
+                        <div class="top-bar-items active">
+                            <i class="fa-solid fa-bars-progress"></i>
+                            <h5>Board view</h5>
+                        </div>
+                        <div class="top-bar-items">
+                            <i class="fa-solid fa-plus"></i>
+                            <h5>Add view</h5>
+                        </div>
+                    </div>
+                    <div class="main-content-body-content">
+                        <div class="to-do view">
+                            <div class="header">
+                                <h5>To Do <span>(3)</span></h5>
+                                <span>
+                                    <i class="fa-solid fa-circle-plus"></i>
+                                    <span>Add new task</span>
+                                </span>
+                            </div>
+                            <div class="task-card">
+                                <div class="task-card-header">
+                                    <div>
+                                        <h4>Task 1</h4>
+                                        <h5>Lorem ipsum dolor.</h5>
+                                    </div>
+                                    <i class="fa-solid fa-ellipsis"></i>
+                                </div>
+                                <div class="task-card-body">
+                                    <div class="top-body-content">
+                                        <div class="left">
+                                            <i class="fa-regular fa-rectangle-list"></i>
+                                            <p>progress</p>
+                                        </div>
+                                        <div class="right">
+                                            <span><span>4</span>/10</span>
+                                        </div>
+                                    </div>
+                                    <div class="progress-bar">
+                                    </div>
+                                </div>
+                                <div class="task-card-footer">
+                                    <span>22 Aug 2022</span>
+                                    <div class="comments-attachments">
+                                        <div class="comments">
+                                            <i class="fa-regular fa-message"></i>
+                                            <span>23</span>
+                                        </div>
+                                        <div class="attachments">
+                                            <i class="fa-solid fa-paperclip"></i>
+                                            <span>3</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="in-progress view">
+                            <div class="header">
+                                <h5> In progress<span>(3)</span></h5>
+                                <span>
+                                    <i class="fa-solid fa-circle-plus"></i>
+                                    <span>Add new task</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="done view">
+                            <div class="header">
+                                <h5>Done <span>(3)</span></h5>
+                                <span>
+                                    <i class="fa-solid fa-circle-plus"></i>
+                                    <span>Add new task</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </section>
         </div>
     </div>
+
+
+    <script src="./main.js"></script>
 </body>
 
 </html>
