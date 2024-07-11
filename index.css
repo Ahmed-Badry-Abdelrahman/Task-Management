@@ -322,14 +322,13 @@ figure img {
 
 .main-content-body-content {
     display: grid;
-    grid-template-columns: repeat(9, 1fr);
-    grid-template-rows: 1fr ;
-    grid-template-areas: "do do do pro pro pro done done done";
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    /* grid-template-areas: "do do do pro pro pro done done done"; */
     column-gap: 15px;
     padding: 15px;
 }
 
-.to-do {
+/* .to-do {
     grid-area: do;
 }
 .in-progress {
@@ -337,12 +336,12 @@ figure img {
 }
 .done {
     grid-area: done;
-}
+} */
 
 .view {
     background-color: #25262B;
     color: #949597;
-    padding: 6px;
+    padding: 15px;
     border-radius: 10px;
     -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
@@ -386,4 +385,159 @@ figure img {
     -moz-transform: scale(1.2);
     -ms-transform: scale(1.2);
     -o-transform: scale(1.2);
+}
+
+.task-card {
+    background-color: #2A2B30;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
+}
+
+.task-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.task-card-header .card-title h4 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 7px;
+}
+
+.task-card-header .card-title h5 {
+    font-size: 14px;
+    color: #858489;
+    font-weight: 400;
+}
+
+
+.task-card-header .menu {
+    display: flex;
+    align-items: center;
+    align-self: flex-start;
+    justify-content: center;
+    width: 30px;
+    cursor: pointer;
+    height: 30px;
+    gap: 1px;
+    border: 2px solid #858489;
+    border-radius: 50%;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -ms-border-radius: 50%;
+    -o-border-radius: 50%;
+    transition: var(--transition);
+    -webkit-transition: var(--transition);
+    -moz-transition: var(--transition);
+    -ms-transition: var(--transition);
+    -o-transition: var(--transition);
+}
+.task-card-header .menu:hover{
+    transform: scale(1.1);
+    -webkit-transform: scale(1.1);
+    -moz-transform: scale(1.1);
+    -ms-transform: scale(1.1);
+    -o-transform: scale(1.1);
+    border: 2px solid #ffffff;
+}
+.task-card-header .menu:hover span {
+
+}
+.task-card-header span {
+    width: 3px;
+    height: 3px;
+    background-color: #ffffff;
+    border-radius: 50%;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -ms-border-radius: 50%;
+    -o-border-radius: 50%;
+}
+
+.task-card-body {
+    margin-bottom: 20px;
+}
+
+.top-body-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+.top-body-content .right {
+    font-size: 14px;
+    font-weight: 500;
+    color: #fff;
+}
+.top-body-content .left {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.top-body-content .left i {
+    font-size: 14px;
+}
+
+.top-body-content .left p {
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.progress-bar {
+    height: 5px;
+    background-color: #3F4045;
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
+}
+
+.progress-bar-inner {
+    width: 40%;
+    height: 100%;
+    background-color: #FF9F48;
+    border-radius: 10px;
+}
+
+.task-card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.task-card-footer span.day {
+    font-weight: 500;
+    padding: 10px 20px;
+    background-color: #36373C;
+    border-radius: 30px;
+    -webkit-border-radius: 30px;
+    -moz-border-radius: 30px;
+    -ms-border-radius: 30px;
+    -o-border-radius: 30px;
+}
+
+.task-card-footer .comments-attachments {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.task-card-footer .comments-attachments .comments span,
+.task-card-footer .comments-attachments .attachments span{
+    margin-left: 3px;
+}
+.task-card-footer .comments-attachments .comments,
+.task-card-footer .comments-attachments .attachments{
+    font-size: 15px;
+    font-weight: 600;
 }
