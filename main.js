@@ -11,3 +11,22 @@ document.querySelectorAll('.top-bar-items').forEach(item => {
 })
 
 
+document.addEventListener('DOMContentLoaded', (event) => {
+    const openPopupBtn = document.getElementById('openPopupBtn');
+    const popup = document.getElementById('popup');
+    const closeBtn = document.querySelector('.close-btn');
+
+    openPopupBtn.addEventListener('click', () => {
+        popup.style.display = 'block';
+    });
+
+    closeBtn.addEventListener('click', () => {
+        popup.style.display = 'none';
+    });
+
+    window.addEventListener('click', (event) => {
+        if (event.target === popup) {
+            popup.style.display = 'none';
+        }
+    });
+});
