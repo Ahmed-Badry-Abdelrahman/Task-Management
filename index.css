@@ -557,7 +557,7 @@ figure img {
     font-size: 14px;
     color: #858489;
     cursor: pointer;
-    margin-left: 5px;
+    margin-right: 5px;
     transition: var(--transition);
     -webkit-transition: var(--transition);
     -moz-transition: var(--transition);
@@ -765,7 +765,9 @@ figure img {
     color: #fff;
 }
 
-.close-btn {
+.close-btn,
+.close-btn-task,
+.close-btn-view {
     position: absolute;
     top: 20px;
     right: 20px;

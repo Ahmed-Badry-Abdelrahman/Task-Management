@@ -80,27 +80,27 @@
                             <i class="fa-solid fa-bars-progress"></i>
                             <h5>Board view</h5>
                         </div>
-                        <div class="top-bar-items">
+                        <div class="top-bar-items" id="openPopupBtnAddView">
                             <i class="fa-solid fa-plus"></i>
                             <h5>Add view</h5>
                         </div>
                     </div>
-                    <div class="main-content-body-content">
-                        <div class="to-do view">
+                    <div id="views-containers" class="main-content-body-content">
+                        <div class="view">
                             <div class="header">
-                                <h5>To Do <span>(3)</span></h5>
-                                <span id="openPopupBtn">
+                                <h5>To Do</h5>
+                                <span id="add-new-task">
                                     <i class="fa-solid fa-circle-plus"></i>
                                     <span>Add new task</span>
                                 </span>
                             </div>
-                            <div class="task-card">
+                            <!-- <div class="task-card">
                                 <div class="task-card-header">
                                     <div class="card-title">
                                         <h4>Design new ui presentation</h4>
                                         <h5>Dribbble marketing</h5>
                                     </div>
-                                    <div class="menu">
+                                    <div class="menu" id="openPopupBtnTask">
                                         <span></span>
                                         <span></span>
                                         <span></span>
@@ -133,9 +133,9 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
-                        <div class="in-progress view">
+                        <!-- <div class="in-progress view">
                             <div class="header">
                                 <h5> In progress<span>(3)</span></h5>
                                 <span>
@@ -223,7 +223,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                         <div class="done view">
                             <div class="header">
                                 <h5>Done <span>(3)</span></h5>
@@ -317,10 +317,10 @@
                 </div>
             </section>
 
-            <div id="popup" class="popup">
+            <div id="popup-add-task" class="popup">
                 <div class="popup-content">
                     <div class="popup-header">
-                        <span class="close-btn"><i class="fa-solid fa-square-xmark"></i></span>
+                        <span class="close-btn-task"><i class="fa-solid fa-square-xmark"></i></span>
                         <h3>Add new task</h3>
                     </div>
                     <div class="tasks-details-container">
@@ -360,6 +360,64 @@
                     </div>
                 </div>
             </div>
+
+            <div id="popup-task-edit" class="popup">
+                <div class="popup-content">
+                    <div class="popup-header">
+                        <span class="close-btn-task"><i class="fa-solid fa-square-xmark"></i></span>
+                        <h3 class="task-title">Task title</h3>
+                    </div>
+                    <div class="tasks-details-container">
+                        <div class="task-details">
+                            <input type="text" name="task-name" placeholder="Task name" required readonly>
+                            <input type="date" name="task-date" placeholder="Task date" required readonly>
+                            <textarea id="popupTextArea" rows="8" cols="50" readonly></textarea>
+                            <button class="save-task"><i class="fa-regular fa-floppy-disk"></i> Save</button>
+                        </div>
+                        <hr>
+                        <div class="sub-task">
+                            <div class="sub-task-header">
+                                <h4>Sub tasks (You can add until 8 tasks)</h4>
+                                <button class="add-task"><i class="fa-solid fa-plus"></i> Add new sub task</button>
+                            </div>
+                            <div class="row">
+                                <input type="text" name="sub-task-name" placeholder="Sub task name" required />
+                                <i class="fa-regular fa-square-check done"></i>
+                                <i class="fa-solid fa-trash delete"></i>
+                            </div>
+                            <div class="row">
+                                <input type="text" name="sub-task-name" placeholder="Sub task name" required />
+                                <i class="fa-regular fa-square-check done"></i>
+                                <i class="fa-solid fa-trash delete"></i>
+                            </div>
+                            <div class="row">
+                                <input type="text" name="sub-task-name" placeholder="Sub task name" required />
+                                <i class="fa-regular fa-square-check done"></i>
+                                <i class="fa-solid fa-trash delete"></i>
+                            </div>
+                            <div class="row">
+                                <input type="text" name="sub-task-name" placeholder="Sub task name" required />
+                                <i class="fa-regular fa-square-check done"></i>
+                                <i class="fa-solid fa-trash delete"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="popup-add-view" class="popup">
+                <div class="popup-content">
+                    <div class="popup-header">
+                        <span class="close-btn-view"><i class="fa-solid fa-square-xmark"></i></span>
+                        <h3 class="task-title">Add view</h3>
+                    </div>
+                    <div class="view-title">
+                        <input id="view-title" type="text" name="view-title" placeholder="View title" required />
+                        <button  id="save-view-btn" class="save-view"><i class="fa-regular fa-floppy-disk"></i> save</button>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 
