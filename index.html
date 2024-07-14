@@ -325,10 +325,11 @@
                     </div>
                     <div class="tasks-details-container">
                         <div class="task-details">
-                            <input type="text" name="task-name" placeholder="Task name" required>
-                            <input type="date" name="task-date" placeholder="Task date" required>
-                            <textarea id="popupTextArea" rows="8" cols="50"></textarea>
-                            <button class="save-task"><i class="fa-regular fa-floppy-disk"></i> Save</button>
+                            <input id="task-title-add" type="text" name="task-name" placeholder="Task name" required>
+                            <input id="task-date-add" type="date" name="task-date" placeholder="Task date" required>
+                            <textarea id="task-description-add" rows="8" cols="50"></textarea>
+                            <button id="save-task-btn" class="save-task"><i class="fa-regular fa-floppy-disk"></i>
+                                Save</button>
                         </div>
                         <hr>
                         <div class="sub-task">
@@ -336,24 +337,17 @@
                                 <h4>Sub tasks (You can add until 8 tasks)</h4>
                                 <button class="add-task"><i class="fa-solid fa-plus"></i> Add new sub task</button>
                             </div>
-                            <div class="row">
-                                <input type="text" name="sub-task-name" placeholder="Sub task name" required />
-                                <i class="fa-regular fa-square-check done"></i>
+                            <div class="row sub-task-info-add">
+                                <input class="sub-task-title-add" type="text" name="sub-task-name"
+                                    placeholder="Sub task name" required />
+                                <input class="sub-task-status-add" type="checkbox" />
                                 <i class="fa-solid fa-trash delete"></i>
                             </div>
-                            <div class="row">
-                                <input type="text" name="sub-task-name" placeholder="Sub task name" required />
-                                <i class="fa-regular fa-square-check done"></i>
-                                <i class="fa-solid fa-trash delete"></i>
-                            </div>
-                            <div class="row">
-                                <input type="text" name="sub-task-name" placeholder="Sub task name" required />
-                                <i class="fa-regular fa-square-check done"></i>
-                                <i class="fa-solid fa-trash delete"></i>
-                            </div>
-                            <div class="row">
-                                <input type="text" name="sub-task-name" placeholder="Sub task name" required />
-                                <i class="fa-regular fa-square-check done"></i>
+                            <div class="row sub-task-info-add">
+                                <input class="sub-task-title-add" type="text" name="sub-task-name"
+                                    placeholder="Sub task name" required />
+                                <input class="sub-task-status-add" type="checkbox" />
+                                <!-- <i class="fa-regular fa-square-check done"></i> -->
                                 <i class="fa-solid fa-trash delete"></i>
                             </div>
                         </div>
@@ -369,10 +363,13 @@
                     </div>
                     <div class="tasks-details-container">
                         <div class="task-details">
-                            <input type="text" name="task-name" placeholder="Task name" required readonly>
-                            <input type="date" name="task-date" placeholder="Task date" required readonly>
-                            <textarea id="popupTextArea" rows="8" cols="50" readonly></textarea>
-                            <button class="save-task"><i class="fa-regular fa-floppy-disk"></i> Save</button>
+                            <input id="task-title" type="text" name="task-name" placeholder="Task name" required
+                                readonly>
+                            <input id="task-date" type="date" name="task-date" placeholder="Task date" required
+                                readonly>
+                            <textarea id="task-description" rows="8" cols="50" readonly></textarea>
+                            <button id="save-task-btn" class="save-task"><i class="fa-regular fa-floppy-disk"></i>
+                                Save</button>
                         </div>
                         <hr>
                         <div class="sub-task">
@@ -380,23 +377,27 @@
                                 <h4>Sub tasks (You can add until 8 tasks)</h4>
                                 <button class="add-task"><i class="fa-solid fa-plus"></i> Add new sub task</button>
                             </div>
-                            <div class="row">
-                                <input type="text" name="sub-task-name" placeholder="Sub task name" required />
+                            <div class="row sub-task-info">
+                                <input id="sub-task-title" type="text" name="sub-task-name" placeholder="Sub task name"
+                                    required />
                                 <i class="fa-regular fa-square-check done"></i>
                                 <i class="fa-solid fa-trash delete"></i>
                             </div>
-                            <div class="row">
-                                <input type="text" name="sub-task-name" placeholder="Sub task name" required />
+                            <div class="row sub-task-info">
+                                <input class="sub-task-title" type="text" name="sub-task-name"
+                                    placeholder="Sub task name" required />
                                 <i class="fa-regular fa-square-check done"></i>
                                 <i class="fa-solid fa-trash delete"></i>
                             </div>
-                            <div class="row">
-                                <input type="text" name="sub-task-name" placeholder="Sub task name" required />
+                            <div class="row sub-task-info">
+                                <input class="sub-task-title" type="text" name="sub-task-name"
+                                    placeholder="Sub task name" required />
                                 <i class="fa-regular fa-square-check done"></i>
                                 <i class="fa-solid fa-trash delete"></i>
                             </div>
-                            <div class="row">
-                                <input type="text" name="sub-task-name" placeholder="Sub task name" required />
+                            <div class="row sub-task-info">
+                                <input class="sub-task-title" type="text" name="sub-task-name"
+                                    placeholder="Sub task name" required />
                                 <i class="fa-regular fa-square-check done"></i>
                                 <i class="fa-solid fa-trash delete"></i>
                             </div>
@@ -413,7 +414,8 @@
                     </div>
                     <div class="view-title">
                         <input id="view-title" type="text" name="view-title" placeholder="View title" required />
-                        <button  id="save-view-btn" class="save-view"><i class="fa-regular fa-floppy-disk"></i> save</button>
+                        <button id="save-view-btn" class="save-view"><i class="fa-regular fa-floppy-disk"></i>
+                            save</button>
                     </div>
                 </div>
             </div>
