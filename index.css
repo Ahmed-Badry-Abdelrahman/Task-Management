@@ -767,7 +767,8 @@ figure img {
 
 .close-btn,
 .close-btn-task,
-.close-btn-view {
+.close-btn-view,
+.close-task {
     position: absolute;
     top: 20px;
     right: 20px;

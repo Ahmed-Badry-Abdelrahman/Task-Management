@@ -11,29 +11,6 @@ document.querySelectorAll('.top-bar-items').forEach(item => {
 })
 
 
-// document.addEventListener('DOMContentLoaded', (event) => {
-//     if(localStorage.getItem('views') !== null){
-//         const openPopupBtn = document.getElementById('openPopupBtnTask');
-//         const popup = document.getElementById('popup-task-edit');
-//         const closeBtn = document.querySelector('.close-btn-task');
-
-//         openPopupBtn.addEventListener('click', () => {
-//             popup.style.display = 'block';
-//         });
-
-//         closeBtn.addEventListener('click', () => {
-//             popup.style.display = 'none';
-//         });
-
-//         window.addEventListener('click', (event) => {
-//             if (event.target === popup) {
-//                 popup.style.display = 'none';
-//             }
-//         });
-//     }
-// });
-
-
 
 ////////////////////////////////////////////////
 let viewId;
@@ -47,6 +24,10 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
     const popupForNewTask = document.getElementById('popup-add-task');
     const closeTaskBtn = document.querySelector('.close-btn-task');
+
+    const openTask = document.getElementById('openTask');
+    const popupTask = document.getElementById('popup-task-edit');
+    const closeTask = document.querySelector('.close-task');
 
     // Open the 'Add View' popup
     openPopupAddView.addEventListener('click', () => {
@@ -92,6 +73,18 @@ document.addEventListener('DOMContentLoaded', (event) => {
         if (event.target.closest('#add-new-task')) {
             viewId = getViewContainingButton(event.target);
             popupForNewTask.style.display = 'block';
+        }
+    });
+
+    // Close the 'Add Task' popup
+    closeTask.addEventListener('click', () => {
+        popupTask.style.display = 'none';
+    });
+
+    // Event delegation for dynamically created 'Add new task' buttons
+    document.getElementById('views-containers').addEventListener('click', (event) => {
+        if (event.target.closest('#openTask')) {
+            popupTask.style.display = 'block';
         }
     });
 });
@@ -263,7 +256,7 @@ function createTaskHeader(taskTitle, taskDescription) {
 
     const menu = document.createElement('div');
     menu.classList.add('menu');
-    menu.setAttribute('id', 'openPopupBtnTask');
+    menu.setAttribute('id', 'openTask');
 
     const span1 = document.createElement('span');
     const span2 = document.createElement('span');
@@ -356,27 +349,6 @@ function createTaskFooter(taskDate) {
 
 
 
-// // function to display tasks in the specific view
-// function displayTasks(viewId) {
-//     // Fetch the view from local storage
-//     const views = JSON.parse(localStorage.getItem('views')) || [];
-//     const view = views[viewId];
-//     console.log(`View info =>`, view);
-//     const tasks = view.tasks
-//     tasks.forEach((task) => {
-//         const taskTitle = task.title
-//         const taskDescription = task.description
-//         createTaskCard(taskTitle, taskDescription)
-//     })
-// }
-
-
-// // <div class="task-card">
-// //     
-
-
-// // </div>
-
 // // let v = [
 // //     {
 // //         title: 'Work',
@@ -400,147 +372,5 @@ function createTaskFooter(taskDate) {
 // //     {}
 // // ]
 
-// // function to create task card
-// function createTaskCard(taskTitle, taskDescription ) {
-//     const taskCard = document.createElement('div');
-//     taskCard.classList.add('task-card');
-//     taskCard.append(createTaskHeader(taskTitle, taskDescription),createTaskBody(), createTaskFooter())
-//     document.getElementById('view').append(taskCard)
-// }
-
-// // <div class="task-card-header">
-// // //         <div class="card-title">
-// // //             <h4>Design new ui presentation</h4>
-// // //             <h5>Dribbble marketing</h5>
-// // //         </div>
-// // //         <div class="menu" id="openPopupBtnTask">
-// // //             <span></span>
-// // //             <span></span>
-// // //             <span></span>
-// // //         </div>
-// // //     </div>
-
-// // function to create task header
-// function createTaskHeader(taskTitle, taskDescription){
-//     const taskCardHeader = document.createElement('div');
-//     taskCardHeader.classList.add('task-card-header');
-//     const cardTitle = document.createElement('div')
-//     cardTitle.classList.add('card-title');
-//     const h4 = document.createElement('h4')
-//     const h4Text = document.createTextNode(taskTitle)
-//     const h5 = document.createElement('h5')
-//     const h5Text = document.createTextNode(taskDescription)
-//     const menu = document.createElement('div')
-//     menu.classList.add('menu')
-//     menu.setAttribute('id','openPopupBtnTask')
-//     const span1 = document.createElement('span')
-//     const span2 = document.createElement('span')
-//     const span3 = document.createElement('span')
-
-
-//     h4.appendChild(h4Text)
-//     h5.appendChild(h5Text)
-//     menu.append(span1, span2, span3)
-//     cardTitle.append(h4, h5)
-//     taskCardHeader.append(cardTitle, menu)
-// }
-
-// //     <div class="task-card-body">
-// //         <div class="top-body-content">
-// //             <div class="left">
-// //                 <i class="fa-regular fa-rectangle-list"></i>
-// //                 <p>Progress</p>
-// //             </div>
-// //             <div class="right">
-// //                 <span><span>4</span>/10</span>
-// //             </div>
-// //         </div>
-// //         <div class="progress-bar">
-// //             <div class="progress-bar-inner"></div>
-// //         </div>
-// //     </div>
-
-// // function to create task body
-// function createTaskBody(){
-//     const taskCardBody = document.createElement('div')
-//     taskCardBody.classList.add('task-card-body')
-//     const topBodyContent = document.createElement('div')
-//     topBodyContent.classList.add('top-body-content')
-//     const left = document.createElement('div')
-//     left.classList.add('left')
-//     const i = document.createElement('i')
-//     i.classList.add('fa-regular','fa-rectangle-list')
-//     const p = document.createElement('p')
-//     p.textContent = 'Progress'
-//     const right = document.createElement('div')
-//     right.classList.add('right')
-//     const span = document.createElement('span')
-//     const span1 = document.createElement('span')
-//     span1.textContent = '4'
-//     span.appendChild(span1)
-//     span.textContent += '/8'
-//     right.appendChild(span)
-//     const progressBar = document.createElement('div')
-//     progressBar.classList.add('progress-bar')
-//     const progressBarInner = document.createElement('div')
-//     progressBarInner.classList.add('progress-bar-inner')
-//     progressBar.appendChild(progressBarInner)
-//     topBodyContent.appendChild(left)
-//     topBodyContent.appendChild(right)
-//     taskCardBody.appendChild(topBodyContent)
-//     taskCardBody.appendChild(progressBar)
-// }
-
-// //     <div class="task-card-footer">
-// //         <span class="day">22 Aug 2022</span>
-// //         <div class="comments-attachments">
-// //             <div class="comments">
-// //                 <i class="fa-regular fa-message"></i>
-// //                 <span>23</span>
-// //             </div>
-// //             <div class="attachments">
-// //                 <i class="fa-solid fa-paperclip"></i>
-// //                 <span>3</span>
-// //             </div>
-// //         </div>
-// //     </div>
-
-// // function to create card footer 
-// function createTaskFooter(){
-//     const taskCardFooter = document.createElement('div')
-//     taskCardFooter.classList.add('task-card-footer')
-//     const day = document.createElement('span')
-//     day.classList.add('day')
-//     day.textContent = '22 Aug 2022'
-//     const commentsAttachments = document.createElement('div')
-//     commentsAttachments.classList.add('comments-attachments')
-//     const comments = document.createElement('div')
-//     comments.classList.add('comments')
-//     const commentsIcon = document.createElement('i')
-//     commentsIcon.classList.add('fa-regular','fa-message')
-//     comments.appendChild(commentsIcon)
-//     const commentsSpan = document.createElement('span')
-//     commentsSpan.textContent = '23'
-//     comments.appendChild(commentsSpan)
-//     const attachments = document.createElement('div')
-//     attachments.classList.add('attachments')
-//     const attachmentsIcon = document.createElement('i')
-//     attachmentsIcon.classList.add('fa-solid','fa-paperclip')
-//     attachments.appendChild(attachmentsIcon)
-//     const attachmentsSpan = document.createElement('span')
-//     attachmentsSpan.textContent = '3'
-//     attachments.appendChild(attachmentsSpan)
-//     commentsAttachments.appendChild(comments)
-//     commentsAttachments.appendChild(attachments)
-//     taskCardFooter.appendChild(day)
-//     taskCardFooter.appendChild(commentsAttachments)
-// }
-
-
-
-
-
-
-// // console.log(v[0].tasks[0].subtasks[1])
 
 // localStorage.clear()
