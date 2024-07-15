@@ -225,22 +225,26 @@ function displayTasks(viewId) {
         existingTasks.forEach(task => task.remove());
     }
 
+    // Iterate over the tasks and create task cards
     tasks.forEach((task, index) => {
-        console.log(`Task =>`, task);
-        const taskTitle = task.title;
-        const taskDescription = task.description;
-        createTaskCard(viewId, taskTitle, taskDescription, task.date, index);
+        const { title, description, date, subTasks } = task;
+        const numOfCheckedTasks = subTasks.filter(subTask => subTask.status).length;
+        const numOfSubTasks = subTasks.length
+        console.log(`Task ${index}:`, task);
+        console.log(`Number of completed sub-tasks: ${numOfCheckedTasks}`);
+
+        createTaskCard(viewId, title, description, date, index, numOfCheckedTasks, numOfSubTasks);
     });
 }
 
 // Function to create task card
-function createTaskCard(viewId, taskTitle, taskDescription, taskDate, index) {
+function createTaskCard(viewId, taskTitle, taskDescription, taskDate, index, numOfCheckedTask = 0, numOfSubTasks = 0) {
     const taskCard = document.createElement('div');
     taskCard.classList.add('task-card');
     taskCard.setAttribute('data-task-id', index);
     taskCard.append(
         createTaskHeader(taskTitle, taskDescription),
-        createTaskBody(),
+        createTaskBody(numOfCheckedTask , numOfSubTasks),
         createTaskFooter(taskDate)
     );
 
@@ -280,7 +284,7 @@ function createTaskHeader(taskTitle, taskDescription) {
 }
 
 // Function to create task body
-function createTaskBody() {
+function createTaskBody(numOfCheckedTask, numOfSubTasks) {
     const taskCardBody = document.createElement('div');
     taskCardBody.classList.add('task-card-body');
 
@@ -301,9 +305,9 @@ function createTaskBody() {
 
     const span = document.createElement('span');
     const span1 = document.createElement('span');
-    span1.textContent = '4'; // Placeholder value, replace with actual progress
+    span1.textContent = numOfCheckedTask; // Placeholder value, replace with actual progress
     span.appendChild(span1);
-    span.textContent += '/8'; // Placeholder value, replace with actual total tasks
+    span.textContent += `/ ${numOfSubTasks}`; // Placeholder value, replace with actual total tasks
 
     right.appendChild(span);
 
