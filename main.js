@@ -36,9 +36,9 @@ document.querySelectorAll('.top-bar-items').forEach(item => {
 
 
 ////////////////////////////////////////////////
+let viewId;
 
-let viewId
-
+// Ensure DOM is loaded before adding event listeners
 document.addEventListener('DOMContentLoaded', (event) => {
     const openPopupAddView = document.getElementById('openPopupBtnAddView');
     const popupForNewView = document.getElementById('popup-add-view');
@@ -138,15 +138,16 @@ function displayViews() {
         viewDiv.append(viewHeader);
 
         viewsContainer.append(viewDiv);
+
+        // Display tasks for this view
+        displayTasks(index);
     });
 }
 
 // Get the specific view id containing the clicked 'Add new task' button
 function getViewContainingButton(target) {
-    return target.closest('.view').getAttribute('data-view-id')
+    return target.closest('.view').getAttribute('data-view-id');
 }
-
-
 
 // Function to get task information and associate it with a specific view
 function getTaskInfo(viewId) {
@@ -170,7 +171,6 @@ function getTaskInfo(viewId) {
             status: subTaskStatusElement.checked
         };
     }).filter(subTask => subTask !== null); // Filter out any null subtasks
-
 
     const task = {
         title: taskTitle,
@@ -209,21 +209,27 @@ document.getElementById('save-task-btn').addEventListener('click', () => {
     }
 });
 
-
-
 // Function to display tasks in the specific view
 function displayTasks(viewId) {
     const views = JSON.parse(localStorage.getItem('views')) || [];
     const view = views[viewId];
-    const tasks = view.tasks;
+    const tasks = view.tasks || [];
+    console.log(`Tasks =>`, tasks);
+
+    // Clear the current tasks in the view
+    const viewContainer = document.querySelector(`.view[data-view-id="${viewId}"]`);
+    if (viewContainer) {
+        const existingTasks = viewContainer.querySelectorAll('.task-card');
+        existingTasks.forEach(task => task.remove());
+    }
 
     tasks.forEach(task => {
+        console.log(`Task =>`, task);
         const taskTitle = task.title;
         const taskDescription = task.description;
-        createTaskCard(taskTitle, taskDescription, task.date);
+        createTaskCard(viewId, taskTitle, taskDescription, task.date);
     });
 }
-
 
 // Function to create task card
 function createTaskCard(viewId, taskTitle, taskDescription, taskDate) {
@@ -236,10 +242,8 @@ function createTaskCard(viewId, taskTitle, taskDescription, taskDate) {
     );
 
     const viewContainer = document.querySelector(`.view[data-view-id="${viewId}"]`);
-    console.log(viewContainer)
     if (viewContainer) {
         viewContainer.append(taskCard);
-        console.log('done')
     }
 }
 
@@ -349,6 +353,8 @@ function createTaskFooter(taskDate) {
 
     return taskCardFooter;
 }
+
+
 
 // // function to display tasks in the specific view
 // function displayTasks(viewId) {
