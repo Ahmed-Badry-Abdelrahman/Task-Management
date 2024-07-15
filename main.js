@@ -81,10 +81,13 @@ document.addEventListener('DOMContentLoaded', (event) => {
         popupTask.style.display = 'none';
     });
 
-    // Event delegation for dynamically created 'Add new task' buttons
+    // Event delegation for dynamically open 'task' 
     document.getElementById('views-containers').addEventListener('click', (event) => {
         if (event.target.closest('#openTask')) {
+            const taskId = getViewContainingTask(event.target);
+            const viewIdContainTask = getViewContainingButton(event.target);
             popupTask.style.display = 'block';
+            displayTaskInformation(taskId, viewIdContainTask)
         }
     });
 });
@@ -141,6 +144,12 @@ function displayViews() {
 function getViewContainingButton(target) {
     return target.closest('.view').getAttribute('data-view-id');
 }
+
+// Get the specific view id containing the clicked 'task' 
+function getViewContainingTask(target) {
+    return target.closest('.task-card').getAttribute('data-task-id');
+}
+
 
 // Function to get task information and associate it with a specific view
 function getTaskInfo(viewId) {
@@ -348,9 +357,38 @@ function createTaskFooter(taskDate) {
     return taskCardFooter;
 }
 
-// function to display task information 
-function displayTaskInformation(taskId) {
 
+// function to display task information 
+function displayTaskInformation(taskId, viewId) {
+    const views = JSON.parse(localStorage.getItem('views'))
+    const view = views[viewId];
+    const task = view.tasks[taskId];
+    // Populate subtasks
+    const subTasks = document.querySelectorAll('.ed-sub-task-title');
+    const subTaskCheckBoxes = document.querySelectorAll('.ed-sub-task-checkbox');
+    // Populate main task fields
+    document.getElementById('ed-task-title').value = task.title || '';
+    document.getElementById('ed-task-name').value = task.title || ''; // Example of setting a fallback value
+    document.getElementById('ed-task-date').value = task.date || '';
+    document.getElementById('ed-task-description').value = task.description || '';
+
+    // Loop through subtasks and populate values
+    Array.from(subTasks).forEach((subTask, index) => {
+        if (task.subTasks && task.subTasks[index]) {
+            subTask.value = task.subTasks[index].title || '';
+        } else {
+            subTask.value = ''; // Handle if subtask title is undefined
+        }
+    });
+
+    // Loop through subtask checkboxes and set checked status
+    Array.from(subTaskCheckBoxes).forEach((subTaskCheckBox, index) => {
+        if (task.subTasks && task.subTasks[index]) {
+            subTaskCheckBox.checked = task.subTasks[index].status || false;
+        } else {
+            subTaskCheckBox.checked = false; // Handle if subtask status is undefined
+        }
+    });
 }
 
 
