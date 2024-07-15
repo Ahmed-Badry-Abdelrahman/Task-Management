@@ -216,18 +216,19 @@ function displayTasks(viewId) {
         existingTasks.forEach(task => task.remove());
     }
 
-    tasks.forEach(task => {
+    tasks.forEach((task, index) => {
         console.log(`Task =>`, task);
         const taskTitle = task.title;
         const taskDescription = task.description;
-        createTaskCard(viewId, taskTitle, taskDescription, task.date);
+        createTaskCard(viewId, taskTitle, taskDescription, task.date, index);
     });
 }
 
 // Function to create task card
-function createTaskCard(viewId, taskTitle, taskDescription, taskDate) {
+function createTaskCard(viewId, taskTitle, taskDescription, taskDate, index) {
     const taskCard = document.createElement('div');
     taskCard.classList.add('task-card');
+    taskCard.setAttribute('data-task-id', index);
     taskCard.append(
         createTaskHeader(taskTitle, taskDescription),
         createTaskBody(),
@@ -345,6 +346,11 @@ function createTaskFooter(taskDate) {
     taskCardFooter.append(day, commentsAttachments);
 
     return taskCardFooter;
+}
+
+// function to display task information 
+function displayTaskInformation(taskId) {
+
 }
 
 
