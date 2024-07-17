@@ -90,7 +90,21 @@ document.addEventListener('DOMContentLoaded', (event) => {
             displayTaskInformation(taskId, viewIdContainTask)
         }
     });
+
+    // Event delegation for dynamically add new subtask in spastic view inside spastic task
+    document.getElementById('add-new-subTask').addEventListener('click', () => {
+        const subTasks = document.querySelectorAll('.sub-task-title-add');
+        console.log(subTasks)
+        const lastSubTask = Array.from(subTasks)[subTasks.length - 1];
+        const lastSubTaskId = lastSubTask.getAttribute('id');
+        if (lastSubTaskId === 'subTask7') {
+            return;
+        } else {
+            addSubTask();
+        }
+    })
 });
+
 
 // Add a new view to local storage
 function addView() {
@@ -156,12 +170,12 @@ function getTaskInfo(viewId) {
     const taskTitle = document.getElementById('task-title-add').value;
     const taskDescription = document.getElementById('task-description-add').value;
     const taskDate = document.getElementById('task-date-add').value;
-    const subTasksElements = document.querySelectorAll('.sub-task-info-add');
+    const subTasksElements = document.querySelectorAll('.sub-task-info-add'); // Ensure this matches the dynamically added subtasks
 
     // Extract subtasks information
     const subTasks = Array.from(subTasksElements).map(subTask => {
         const subTaskTitleElement = subTask.querySelector('.sub-task-title-add');
-        const subTaskStatusElement = subTask.querySelector('.sub-task-status-add');
+        const subTaskStatusElement = subTask.querySelector('.sub-task-checkbox-add'); // Updated to match the dynamically added checkbox class
 
         if (!subTaskTitleElement || !subTaskStatusElement) {
             console.error('Subtask elements not found for a subtask');
@@ -201,7 +215,27 @@ function getTaskInfo(viewId) {
         // update local storage
         localStorage.setItem('views', JSON.stringify(views));
     }
+
+    // Clear fields
+    document.getElementById('task-title-add').value = '';
+    document.getElementById('task-description-add').value = '';
+    document.getElementById('task-date-add').value = '';
+    subTasksElements.forEach(subTask => {
+        subTask.querySelector('.sub-task-title-add').value = '';
+        subTask.querySelector('.sub-task-checkbox-add').checked = false;
+    });
+
+    // Close the popup
+    document.getElementById('popup-add-task').style.display = 'none';
+
+    // remove the new subtasks that is add 
+    subTasksElements.forEach(subTask => {
+        if (!subTask.classList.contains('first-one')) {
+            subTask.remove();
+        }
+    });
 }
+
 
 document.getElementById('save-task-btn').addEventListener('click', () => {
     // Assuming the viewId is stored in a global variable or can be determined in some way
@@ -244,7 +278,7 @@ function createTaskCard(viewId, taskTitle, taskDescription, taskDate, index, num
     taskCard.setAttribute('data-task-id', index);
     taskCard.append(
         createTaskHeader(taskTitle, taskDescription),
-        createTaskBody(numOfCheckedTask , numOfSubTasks),
+        createTaskBody(numOfCheckedTask, numOfSubTasks),
         createTaskFooter(taskDate)
     );
 
@@ -362,14 +396,17 @@ function createTaskFooter(taskDate) {
 }
 
 
-// function to display task information 
+
+// Function to display task information 
 function displayTaskInformation(taskId, viewId) {
-    const views = JSON.parse(localStorage.getItem('views'))
+    const views = JSON.parse(localStorage.getItem('views'));
     const view = views[viewId];
     const task = view.tasks[taskId];
-    // Populate subtasks
-    const subTasks = document.querySelectorAll('.ed-sub-task-title');
-    const subTaskCheckBoxes = document.querySelectorAll('.ed-sub-task-checkbox');
+
+    // Clear existing subtasks container
+    const subTasksContainer = document.getElementById('ed-subtasks-container');
+    subTasksContainer.innerHTML = '';
+
     // Populate main task fields
     document.getElementById('ed-task-title').value = task.title || '';
     document.getElementById('ed-task-name').value = task.title || ''; // Example of setting a fallback value
@@ -377,48 +414,89 @@ function displayTaskInformation(taskId, viewId) {
     document.getElementById('ed-task-description').value = task.description || '';
 
     // Loop through subtasks and populate values
-    Array.from(subTasks).forEach((subTask, index) => {
-        if (task.subTasks && task.subTasks[index]) {
-            subTask.value = task.subTasks[index].title || '';
-        } else {
-            subTask.value = ''; // Handle if subtask title is undefined
-        }
-    });
+    task.subTasks.forEach((subTask, index) => {
+        const subTaskContainer = document.createElement('div');
+        subTaskContainer.classList.add('row', 'sub-task-info-add');
 
-    // Loop through subtask checkboxes and set checked status
-    Array.from(subTaskCheckBoxes).forEach((subTaskCheckBox, index) => {
-        if (task.subTasks && task.subTasks[index]) {
-            subTaskCheckBox.checked = task.subTasks[index].status || false;
-        } else {
-            subTaskCheckBox.checked = false; // Handle if subtask status is undefined
-        }
+        const subTaskInput = document.createElement('input');
+        subTaskInput.type = 'text';
+        subTaskInput.className = 'ed-sub-task-title';
+        subTaskInput.value = subTask.title || '';
+        subTaskContainer.appendChild(subTaskInput);
+
+        const subTaskCheckBox = document.createElement('input');
+        subTaskCheckBox.type = 'checkbox';
+        subTaskCheckBox.className = 'ed-sub-task-checkbox';
+        subTaskCheckBox.checked = subTask.status || false;
+        subTaskContainer.appendChild(subTaskCheckBox);
+
+        const subTaskIcon = document.createElement('i');
+        subTaskIcon.className = 'fa-solid fa-trash delete';
+        subTaskContainer.appendChild(subTaskIcon);
+
+        subTasksContainer.appendChild(subTaskContainer);
     });
 }
 
+function addSubTask() {
+    const subTasks = document.querySelectorAll('.sub-task-title-add');
+    const subTaskCount = subTasks.length + 1;
 
+    const subTask = document.createElement('input');
+    subTask.type = 'text';
+    subTask.className = 'sub-task-title-add';
+    subTask.placeholder = 'Subtask Title';
+    subTask.id = 'subTask' + subTaskCount;
 
-// // let v = [
-// //     {
-// //         title: 'Work',
-// //         tasks: [
-// //             {
-// //                 title: 'Task 1',
-// //                 description: 'Description 1',
-// //                 date: '2022-01-01',
-// //                 subtasks: [
-// //                     {
-// //                         taskContent: "skadaksl ad kaklw",
-// //                         taskStatus: "completed"
-// //                     }
-// //                 ]
-// //             },
-// //             {},
-// //             {}
-// //         ]
-// //     },
-// //     {},
-// //     {}
-// // ]
+    const subTaskCheckBox = document.createElement('input');
+    subTaskCheckBox.type = 'checkbox';
+    subTaskCheckBox.className = 'sub-task-checkbox-add'; // Ensure this matches the expected class name in getTaskInfo
+
+    const subTaskIcon = document.createElement('i');
+    subTaskIcon.className = 'fa-solid fa-trash delete';
+
+    const subTaskContainer = document.createElement('div');
+    subTaskContainer.classList.add('row', 'sub-task-info-add'); // Ensure this matches the expected class name in getTaskInfo
+
+    subTaskContainer.appendChild(subTask);
+    subTaskContainer.appendChild(subTaskCheckBox);
+    subTaskContainer.appendChild(subTaskIcon);
+
+    // Insert the new subtask container into the DOM
+    const container = document.getElementById('subtasks-container'); // Ensure this ID matches your container
+    container.appendChild(subTaskContainer);
+}
+
+// function to get the editable information from popup and update this task in the this view then display the newest task
+function updateTask() {
+    const taskTitle = document.getElementById('ed-task-name').value;
+    const taskDescription = document.getElementById('ed-task-description').value;
+    const taskDueDate = document.getElementById('ed-task-date').value;
+    const taskSubTasks = getSubTasks();
+}
+
+// let views = [
+//     {
+//         title: 'Work',
+//         tasks: [
+//             {
+//                 title: 'Task 1',
+//                 description: 'Description 1',
+//                 date: '2022-01-01',
+//                 subtasks: [
+//                     {
+//                         title: "t1",
+//                         status: "true"
+//                     }
+//                 ]
+//             },
+//             {},
+//             {}
+//         ]
+//     },
+//     {},
+//     {}
+// ]
 
 
 // localStorage.clear()

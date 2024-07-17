@@ -332,22 +332,15 @@
                                 Save</button>
                         </div>
                         <hr>
-                        <div class="sub-task">
+                        <div id="subtasks-container" class="sub-task">
                             <div class="sub-task-header">
                                 <h4>Sub tasks (You can add until 8 tasks)</h4>
-                                <button class="add-task"><i class="fa-solid fa-plus"></i> Add new sub task</button>
+                                <button id="add-new-subTask" class="add-task"><i class="fa-solid fa-plus"></i> Add new sub task</button>
                             </div>
-                            <div class="row sub-task-info-add">
-                                <input class="sub-task-title-add" type="text" name="sub-task-name"
+                            <div class="row sub-task-info-add first-one">
+                                <input id="subtask0" class="sub-task-title-add" type="text" name="sub-task-name"
                                     placeholder="Sub task name" required />
-                                <input class="sub-task-status-add" type="checkbox" />
-                                <i class="fa-solid fa-trash delete"></i>
-                            </div>
-                            <div class="row sub-task-info-add">
-                                <input class="sub-task-title-add" type="text" name="sub-task-name"
-                                    placeholder="Sub task name" required />
-                                <input class="sub-task-status-add" type="checkbox" />
-                                <!-- <i class="fa-regular fa-square-check done"></i> -->
+                                <input class="sub-task-checkbox-add" type="checkbox" />
                                 <i class="fa-solid fa-trash delete"></i>
                             </div>
                         </div>
@@ -364,30 +357,18 @@
                     <div class="tasks-details-container">
                         <div class="task-details">
                             <input id="ed-task-name" type="text" name="task-name" placeholder="Task name" required
-                                readonly>
+                                >
                             <input id="ed-task-date" type="date" name="task-date" placeholder="Task date" required
-                                readonly>
-                            <textarea id="ed-task-description" rows="8" cols="50" readonly></textarea>
+                                >
+                            <textarea id="ed-task-description" rows="8" cols="50" ></textarea>
                             <button id="ed-save-task-btn" class="save-task"><i class="fa-regular fa-floppy-disk"></i>
                                 Save</button>
                         </div>
                         <hr>
-                        <div class="sub-task">
+                        <div id="ed-subtasks-container" class="sub-task">
                             <div class="sub-task-header">
                                 <h4>Sub tasks (You can add until 8 tasks)</h4>
                                 <button class="add-task"><i class="fa-solid fa-plus"></i> Add new sub task</button>
-                            </div>
-                            <div class="row sub-task-info">
-                                <input class="ed-sub-task-title" type="text" name="sub-task-name" placeholder="Sub task name"
-                                    required />
-                                    <input class="ed-sub-task-checkbox" type="checkbox" />
-                                <i class="fa-solid fa-trash delete"></i>
-                            </div>
-                            <div class="row sub-task-info">
-                                <input class="ed-sub-task-title" type="text" name="sub-task-name"
-                                    placeholder="Sub task name" required />
-                                    <input class="ed-sub-task-checkbox" type="checkbox" />
-                                <i class="fa-solid fa-trash delete"></i>
                             </div>
                         </div>
                     </div>
