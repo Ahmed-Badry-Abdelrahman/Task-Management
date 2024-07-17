@@ -88,6 +88,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
             const viewIdContainTask = getViewContainingButton(event.target);
             popupTask.style.display = 'block';
             displayTaskInformation(taskId, viewIdContainTask)
+            document.getElementById('popup-task-edit').setAttribute('taskId', taskId)
+            document.getElementById('popup-task-edit').setAttribute('viewIdContainTask', viewIdContainTask)
         }
     });
 
@@ -103,6 +105,15 @@ document.addEventListener('DOMContentLoaded', (event) => {
             addSubTask();
         }
     })
+
+    // 
+    document.getElementById('ed-save-task-btn').addEventListener('click', function () {
+        const popupTaskEdit = document.getElementById('popup-task-edit');
+        const viewIdContainTask = popupTaskEdit.getAttribute('viewIdContainTask');
+        const taskId = popupTaskEdit.getAttribute('taskId');
+        updateTask(viewIdContainTask, taskId);
+    });
+    
 });
 
 
@@ -403,9 +414,14 @@ function displayTaskInformation(taskId, viewId) {
     const view = views[viewId];
     const task = view.tasks[taskId];
 
-    // Clear existing subtasks container
+    // Clear existing subtasks container except the div with class 'head-div'
     const subTasksContainer = document.getElementById('ed-subtasks-container');
+    const headDiv = subTasksContainer.querySelector('.head-div');
     subTasksContainer.innerHTML = '';
+    if (headDiv) {
+        subTasksContainer.appendChild(headDiv);
+    }
+
 
     // Populate main task fields
     document.getElementById('ed-task-title').value = task.title || '';
@@ -440,7 +456,7 @@ function displayTaskInformation(taskId, viewId) {
 
 function addSubTask() {
     const subTasks = document.querySelectorAll('.sub-task-title-add');
-    const subTaskCount = subTasks.length + 1;
+    const subTaskCount = subTasks.length;
 
     const subTask = document.createElement('input');
     subTask.type = 'text';
@@ -467,13 +483,96 @@ function addSubTask() {
     container.appendChild(subTaskContainer);
 }
 
-// function to get the editable information from popup and update this task in the this view then display the newest task
-function updateTask() {
+// Function to get the editable information from popup and update the task in the view then display the newest task
+// Function to get the editable information from popup and update the task in the view then display the newest task
+// Function to get the editable information from popup and update the task in the view then display the newest task
+function updateTask(viewIndex, taskIndex) {
     const taskTitle = document.getElementById('ed-task-name').value;
     const taskDescription = document.getElementById('ed-task-description').value;
     const taskDueDate = document.getElementById('ed-task-date').value;
     const taskSubTasks = getSubTasks();
+
+    const views = JSON.parse(localStorage.getItem('views'));
+
+    // Log the views and indices for debugging
+    console.log('Views:', views);
+    console.log('View Index:', viewIndex);
+    console.log('Task Index:', taskIndex);
+
+    // Access the view and task using the indices directly
+    const view = views[viewIndex];
+
+    // Check if the view is found
+    if (!view) {
+        console.error('View not found');
+        return;
+    }
+
+    // Check if the task is found
+    const task = view.tasks[taskIndex];
+    if (!task) {
+        console.error('Task not found');
+        return;
+    }
+
+    // Log the view and task for debugging
+    console.log('View:', view);
+    console.log('Task:', task);
+
+    // Log task details for debugging
+    console.log(taskTitle);
+    console.log(taskDescription);
+    console.log(taskDueDate);
+    console.log(taskSubTasks);
+
+    // Update the task details
+    task.title = taskTitle;
+    task.description = taskDescription;
+    task.dueDate = taskDueDate;
+
+    // Update subtasks
+    task.subTasks = taskSubTasks;
+
+    // Save the updated views back to localStorage
+    localStorage.setItem('views', JSON.stringify(views));
+    displayViews();
 }
+
+// Function to get the subtasks
+function getSubTasks() {
+    const subTasksElements = document.querySelectorAll('.sub-task-info-add');
+    const subTasks = [];
+
+    subTasksElements.forEach(subTaskElement => {
+        const subTaskTitleElement = subTaskElement.querySelector('.ed-sub-task-title');
+        const subTaskCheckBoxElement = subTaskElement.querySelector('.ed-sub-task-checkbox');
+
+        // Check if the elements exist
+        if (subTaskTitleElement && subTaskCheckBoxElement) {
+            const subTaskTitle = subTaskTitleElement.value;
+            const subTaskCheckBox = subTaskCheckBoxElement.checked;
+
+            subTasks.push({
+                title: subTaskTitle,
+                checked: subTaskCheckBox
+            });
+        } else {
+            console.warn('Subtask elements not found in:', subTaskElement);
+        }
+    });
+
+    return subTasks;
+}
+
+
+
+
+
+
+
+
+
+
 
 // let views = [
 //     {
