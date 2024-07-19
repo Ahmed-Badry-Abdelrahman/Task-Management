@@ -136,6 +136,14 @@ document.addEventListener('DOMContentLoaded', (event) => {
         document.getElementById('popup-task-edit').style.display = 'none';
     });
 
+
+    // Ensure that this function is called after updating the subtask statuses
+    document.getElementById('save-task-btn').addEventListener('click', () => {
+        if (viewId !== null) {
+            getTaskInfo(viewId);
+            displayTasks(viewId, );
+        }
+    });
 });
 
 
@@ -227,10 +235,13 @@ function getTaskInfo(viewId) {
         date: taskDate,
         subTasks: subTasks,
         get checkedTasks() {
-            return this.subTasks.filter(subTask => subTask.status === true).length;
+            const totalSubTasks = subTasks.length;
+            const completedSubTasks = this.subTasks.filter(subTask => subTask.status === true).length;
+            const progressPercentage = totalSubTasks === 0 ? 0 : (completedSubTasks / totalSubTasks) * 100;
+            return progressPercentage
         }
     };
-    
+
 
     // Fetch the view from local storage
     const views = JSON.parse(localStorage.getItem('views')) || [];
@@ -278,23 +289,11 @@ function getTaskInfo(viewId) {
 
 
 
-// Ensure that this function is called after updating the subtask statuses
-document.getElementById('save-task-btn').addEventListener('click', () => {
-    if (viewId !== null) {
-        getTaskInfo(viewId);
-        displayTasks(viewId);
 
-        // Update progress bar
-        const views = JSON.parse(localStorage.getItem('views'));
-        const view = views[viewId];
-        const subTasks = view.tasks[view.tasks.length - 1].subTasks;
-        updateProgressBar(subTasks);
-    }
-});
 
 
 // Function to display tasks in the specific view
-function displayTasks(viewId) {
+function displayTasks(viewId, progressPercentage) {
     const views = JSON.parse(localStorage.getItem('views')) || [];
     const view = views[viewId];
     const tasks = view.tasks || [];
@@ -315,18 +314,20 @@ function displayTasks(viewId) {
         console.log(`Task ${index}:`, task);
         console.log(`Number of completed sub-tasks: ${numOfCheckedTasks}`);
 
-        createTaskCard(viewId, title, description, date, index, numOfCheckedTasks, numOfSubTasks);
+        createTaskCard(viewId, title, description, date, index, numOfCheckedTasks, numOfSubTasks, progressPercentage);
+
+
     });
 }
 
 // Function to create task card
-function createTaskCard(viewId, taskTitle, taskDescription, taskDate, index, numOfCheckedTask = 0, numOfSubTasks = 0) {
+function createTaskCard(viewId, taskTitle, taskDescription, taskDate, index, numOfCheckedTask = 0, numOfSubTasks = 0, progressPercentage = 0) {
     const taskCard = document.createElement('div');
     taskCard.classList.add('task-card');
     taskCard.setAttribute('data-task-id', index);
     taskCard.append(
         createTaskHeader(taskTitle, taskDescription),
-        createTaskBody(numOfCheckedTask, numOfSubTasks),
+        createTaskBody(numOfCheckedTask, numOfSubTasks, progressPercentage),
         createTaskFooter(taskDate)
     );
 
@@ -398,6 +399,19 @@ function createTaskBody(numOfCheckedTask, numOfSubTasks) {
 
     const progressBarInner = document.createElement('div');
     progressBarInner.classList.add('progress-bar-inner');
+    progressBarInner.style.width = numOfCheckedTask / numOfSubTasks * 100 + '%'; //
+    const progressPercentage = (numOfCheckedTask / numOfSubTasks) * 100;
+
+    // if all subtasks cheaked make background is green 
+    if (numOfCheckedTask === numOfSubTasks) {
+        progressBarInner.style.backgroundColor = '#48ff5a';
+    } else if (progressPercentage < 100 && progressPercentage > 30) {
+        progressBarInner.style.backgroundColor = '#FF9F48';
+    } else {
+        progressBarInner.style.backgroundColor = '#ff4848';
+    }
+
+
 
     progressBar.appendChild(progressBarInner);
     left.append(i, p);
@@ -600,33 +614,9 @@ function getSubTasks() {
     return subTasks;
 }
 
-function updateProgressBar(subTasks) {
-    let progressBar = document.querySelector('.progress-bar-inner');
+function updateProgressBar(progressPercentage) {
 
-    if (!progressBar) {
-        // Create progress bar dynamically if it doesn't exist
-        const progressBarContainer = document.createElement('div');
-        progressBarContainer.className = 'progress-bar-container';
-
-        progressBar = document.createElement('div');
-        progressBar.className = 'progress-bar-inner';
-
-        progressBarContainer.appendChild(progressBar);
-        document.body.appendChild(progressBarContainer); // Or append it to a specific element
-    }
-
-    if (!Array.isArray(subTasks)) {
-        console.error('subTasks is not an array');
-        return;
-    }
-
-    // Get the number of completed subtasks
-    const completedSubTasks = subTasks.filter(subtask => subtask.status).length;
-
-    // Calculate the percentage of completion
-    const totalSubTasks = subTasks.length;
-    const progressPercentage = totalSubTasks === 0 ? 0 : (completedSubTasks / totalSubTasks) * 100;
-
+    console.log('progressPercentage' + progressPercentage)
     // Update the width of the progress bar
     progressBar.style.width = `${progressPercentage}%`;
 
@@ -643,31 +633,31 @@ function updateProgressBar(subTasks) {
     }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+// document.addEventListener('DOMContentLoaded', () => {
 
 
-    if (localStorage.getItem('progressPercentage')) {
-        const progressBar = document.querySelector('.progress-bar-inner');
-        // Retrieve saved progress percentage from localStorage
-        const savedPercentage = localStorage.getItem('progressPercentage');
+//     if (localStorage.getItem('progressPercentage')) {
+//         const progressBar = document.querySelector('.progress-bar-inner');
+//         // Retrieve saved progress percentage from localStorage
+//         const savedPercentage = localStorage.getItem('progressPercentage');
 
-        if (savedPercentage !== null) {
-            progressBar.style.width = `${savedPercentage}%`;
+//         if (savedPercentage !== null) {
+//             progressBar.style.width = `${savedPercentage}%`;
 
-            // Set the background color based on saved progress percentage
-            const progressPercentage = parseFloat(savedPercentage);
-            if (progressPercentage <= 30) {
-                progressBar.style.backgroundColor = 'red';
-            } else if (progressPercentage > 30 && progressPercentage < 100) {
-                progressBar.style.backgroundColor = 'orange';
-            } else {
-                progressBar.style.backgroundColor = 'green';
-            }
-        } else {
-            console.log('No saved progress found');
-        }
-    }
-});
+//             // Set the background color based on saved progress percentage
+//             const progressPercentage = parseFloat(savedPercentage);
+//             if (progressPercentage <= 30) {
+//                 progressBar.style.backgroundColor = 'red';
+//             } else if (progressPercentage > 30 && progressPercentage < 100) {
+//                 progressBar.style.backgroundColor = 'orange';
+//             } else {
+//                 progressBar.style.backgroundColor = 'green';
+//             }
+//         } else {
+//             console.log('No saved progress found');
+//         }
+//     }
+// });
 
 
 
