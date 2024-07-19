@@ -102,18 +102,40 @@ document.addEventListener('DOMContentLoaded', (event) => {
         if (lastSubTaskId === 'subTask7') {
             return;
         } else {
-            addSubTask();
+            addSubTask('subtasks-container-add');
         }
     })
 
-    // 
+    // // Event delegation for dynamically adding new subtask in specific view inside specific task (in edit)
+    // document.getElementById('views-containers').addEventListener('click', (event) => {
+    //     if (event.target.closest('#openTask')) {
+    //         const taskId = getViewContainingTask(event.target);
+    //         const viewIdContainTask = getViewContainingButton(event.target);
+
+    //         document.getElementById('add-new-subTask-ed').addEventListener('click', () => {
+    //             const subTasks = document.querySelectorAll('.sub-task-title-add');
+    //             const lastSubTask = Array.from(subTasks)[subTasks.length - 1];
+    //             const lastSubTaskId = lastSubTask ? lastSubTask.getAttribute('id') : null;
+
+    //             if (lastSubTaskId === 'subTask8') {
+    //                 return;
+    //             } else {
+    //                 addSubTaskEdit(viewIdContainTask, taskId);
+    //             }
+    //         });
+    //     }
+    // });
+
+    // Save task button event listener
     document.getElementById('ed-save-task-btn').addEventListener('click', function () {
         const popupTaskEdit = document.getElementById('popup-task-edit');
         const viewIdContainTask = popupTaskEdit.getAttribute('viewIdContainTask');
         const taskId = popupTaskEdit.getAttribute('taskId');
         updateTask(viewIdContainTask, taskId);
+        // Close the popup
+        document.getElementById('popup-task-edit').style.display = 'none';
     });
-    
+
 });
 
 
@@ -203,8 +225,12 @@ function getTaskInfo(viewId) {
         title: taskTitle,
         description: taskDescription,
         date: taskDate,
-        subTasks: subTasks
+        subTasks: subTasks,
+        get checkedTasks() {
+            return this.subTasks.filter(subTask => subTask.status === true).length;
+        }
     };
+    
 
     // Fetch the view from local storage
     const views = JSON.parse(localStorage.getItem('views')) || [];
@@ -245,16 +271,27 @@ function getTaskInfo(viewId) {
             subTask.remove();
         }
     });
+
+    // Handle progress bar
+    // updateProgressBar(subTasks);
 }
 
 
+
+// Ensure that this function is called after updating the subtask statuses
 document.getElementById('save-task-btn').addEventListener('click', () => {
-    // Assuming the viewId is stored in a global variable or can be determined in some way
     if (viewId !== null) {
         getTaskInfo(viewId);
         displayTasks(viewId);
+
+        // Update progress bar
+        const views = JSON.parse(localStorage.getItem('views'));
+        const view = views[viewId];
+        const subTasks = view.tasks[view.tasks.length - 1].subTasks;
+        updateProgressBar(subTasks);
     }
 });
+
 
 // Function to display tasks in the specific view
 function displayTasks(viewId) {
@@ -454,7 +491,7 @@ function displayTaskInformation(taskId, viewId) {
     });
 }
 
-function addSubTask() {
+function addSubTask(containerId) {
     const subTasks = document.querySelectorAll('.sub-task-title-add');
     const subTaskCount = subTasks.length;
 
@@ -479,12 +516,10 @@ function addSubTask() {
     subTaskContainer.appendChild(subTaskIcon);
 
     // Insert the new subtask container into the DOM
-    const container = document.getElementById('subtasks-container'); // Ensure this ID matches your container
+    const container = document.getElementById(containerId); // Ensure this ID matches your container
     container.appendChild(subTaskContainer);
 }
 
-// Function to get the editable information from popup and update the task in the view then display the newest task
-// Function to get the editable information from popup and update the task in the view then display the newest task
 // Function to get the editable information from popup and update the task in the view then display the newest task
 function updateTask(viewIndex, taskIndex) {
     const taskTitle = document.getElementById('ed-task-name').value;
@@ -529,13 +564,14 @@ function updateTask(viewIndex, taskIndex) {
     task.title = taskTitle;
     task.description = taskDescription;
     task.dueDate = taskDueDate;
-
-    // Update subtasks
-    task.subTasks = taskSubTasks;
+    task.subTasks.forEach((subTask, index) => {
+        subTask.title = taskSubTasks[index].title;
+        subTask.status = taskSubTasks[index].checked;
+    })
 
     // Save the updated views back to localStorage
     localStorage.setItem('views', JSON.stringify(views));
-    displayViews();
+    displayViews()
 }
 
 // Function to get the subtasks
@@ -564,10 +600,115 @@ function getSubTasks() {
     return subTasks;
 }
 
+function updateProgressBar(subTasks) {
+    let progressBar = document.querySelector('.progress-bar-inner');
+
+    if (!progressBar) {
+        // Create progress bar dynamically if it doesn't exist
+        const progressBarContainer = document.createElement('div');
+        progressBarContainer.className = 'progress-bar-container';
+
+        progressBar = document.createElement('div');
+        progressBar.className = 'progress-bar-inner';
+
+        progressBarContainer.appendChild(progressBar);
+        document.body.appendChild(progressBarContainer); // Or append it to a specific element
+    }
+
+    if (!Array.isArray(subTasks)) {
+        console.error('subTasks is not an array');
+        return;
+    }
+
+    // Get the number of completed subtasks
+    const completedSubTasks = subTasks.filter(subtask => subtask.status).length;
+
+    // Calculate the percentage of completion
+    const totalSubTasks = subTasks.length;
+    const progressPercentage = totalSubTasks === 0 ? 0 : (completedSubTasks / totalSubTasks) * 100;
+
+    // Update the width of the progress bar
+    progressBar.style.width = `${progressPercentage}%`;
+
+    // Save progress percentage to localStorage
+    localStorage.setItem('progressPercentage', progressPercentage);
+
+    // Update the background color based on progress
+    if (progressPercentage <= 30) {
+        progressBar.style.backgroundColor = 'red';
+    } else if (progressPercentage > 30 && progressPercentage < 100) {
+        progressBar.style.backgroundColor = 'orange';
+    } else {
+        progressBar.style.backgroundColor = 'green';
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+
+
+    if (localStorage.getItem('progressPercentage')) {
+        const progressBar = document.querySelector('.progress-bar-inner');
+        // Retrieve saved progress percentage from localStorage
+        const savedPercentage = localStorage.getItem('progressPercentage');
+
+        if (savedPercentage !== null) {
+            progressBar.style.width = `${savedPercentage}%`;
+
+            // Set the background color based on saved progress percentage
+            const progressPercentage = parseFloat(savedPercentage);
+            if (progressPercentage <= 30) {
+                progressBar.style.backgroundColor = 'red';
+            } else if (progressPercentage > 30 && progressPercentage < 100) {
+                progressBar.style.backgroundColor = 'orange';
+            } else {
+                progressBar.style.backgroundColor = 'green';
+            }
+        } else {
+            console.log('No saved progress found');
+        }
+    }
+});
 
 
 
 
+// // Function to add new subtask in edit case
+// function addSubTaskEdit(viewId, taskId) {
+//     const views = JSON.parse(localStorage.getItem('views'));
+//     const view = views[viewId];
+//     const task = view.tasks[taskId];
+//     const subTasks = task.subTasks;
+//     const subTaskCount = subTasks.length;
+
+//     if (subTaskCount >= 8) {
+//         alert('You can add a maximum of 8 subtasks.');
+//         return;
+//     }
+
+//     const subTask = document.createElement('input');
+//     subTask.type = 'text';
+//     subTask.className = 'sub-task-title-add';
+//     subTask.placeholder = 'Subtask Title';
+//     subTask.id = `subTask${subTaskCount + 1}`;
+
+//     const subTaskCheckBox = document.createElement('input');
+//     subTaskCheckBox.type = 'checkbox';
+//     subTaskCheckBox.className = 'sub-task-checkbox-add'; // Ensure this matches the expected class name in getTaskInfo
+
+//     const subTaskIcon = document.createElement('i');
+//     subTaskIcon.className = 'fa-solid fa-trash delete';
+
+//     const subTaskContainer = document.createElement('div');
+//     subTaskContainer.classList.add('row', 'sub-task-info-add'); // Ensure this matches the expected class name in getTaskInfo
+
+//     subTaskContainer.appendChild(subTask);
+//     subTaskContainer.appendChild(subTaskCheckBox);
+//     subTaskContainer.appendChild(subTaskIcon);
+
+//     // Insert the new subtask container into the DOM
+//     const container = document.getElementById('ed-subtasks-container'); // Ensure this ID matches your container
+//     container.appendChild(subTaskContainer);
+// }
 
 
 
@@ -587,7 +728,8 @@ function getSubTasks() {
 //                         title: "t1",
 //                         status: "true"
 //                     }
-//                 ]
+//                 ],
+//                  checkedTask:
 //             },
 //             {},
 //             {}
