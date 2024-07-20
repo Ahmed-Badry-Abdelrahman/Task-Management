@@ -107,25 +107,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
         }
     })
 
-    // // Event delegation for dynamically adding new subtask in specific view inside specific task (in edit)
-    // document.getElementById('views-containers').addEventListener('click', (event) => {
-    //     if (event.target.closest('#openTask')) {
-    //         const taskId = getViewContainingTask(event.target);
-    //         const viewIdContainTask = getViewContainingButton(event.target);
 
-    //         document.getElementById('add-new-subTask-ed').addEventListener('click', () => {
-    //             const subTasks = document.querySelectorAll('.sub-task-title-add');
-    //             const lastSubTask = Array.from(subTasks)[subTasks.length - 1];
-    //             const lastSubTaskId = lastSubTask ? lastSubTask.getAttribute('id') : null;
-
-    //             if (lastSubTaskId === 'subTask8') {
-    //                 return;
-    //             } else {
-    //                 addSubTaskEdit(viewIdContainTask, taskId);
-    //             }
-    //         });
-    //     }
-    // });
 
     // Save task button event listener
     document.getElementById('ed-save-task-btn').addEventListener('click', function () {
@@ -147,29 +129,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
         }
     });
 
-    // document.getElementById('popup-task-edit').addEventListener('click', (event) => {
-    //     const deleteIcons = document.querySelectorAll('.deleteIcon')
-    //     // if (event.target.closest('#add-new-task')) {
-    //     //     viewId = getViewContainingButton(event.target);
-    //     //     popupForNewTask.style.display = 'block';
-    //     // }
-    //     deleteIcons.forEach((icon, index) => {
-    //         if (event.target.closest('.deleteIcon')) {
-    //             const taskId = icon.getAttribute('taskId');
-    //             const viewIdContainTask = icon.getAttribute('viewIdContainTask');
-    //             console.log(taskId, viewIdContainTask)
-    //             console.log('clicked')
-    //             deleteTask(viewIdContainTask, taskId);
-    //             }
-    //     })
-    // });
 
-    // document.getElementById('popup-add-task').addEventListener('click', (event) => {
-    //     if (event.target.closest('#add-new-task')) {
-    //         viewId = getViewContainingButton(event.target);
-    //         popupForNewTask.style.display = 'block';
-    //     }
-    // });
 
 });
 
@@ -681,86 +641,6 @@ function deleteSubTaskFromView(viewId, taskId, subTaskId) {
     subTasks.splice(subTaskIndex, 1)
     localStorage.setItem('views', JSON.stringify(views))
 }
-
-
-
-
-
-
-
-
-
-
-// document.addEventListener('DOMContentLoaded', () => {
-
-
-//     if (localStorage.getItem('progressPercentage')) {
-//         const progressBar = document.querySelector('.progress-bar-inner');
-//         // Retrieve saved progress percentage from localStorage
-//         const savedPercentage = localStorage.getItem('progressPercentage');
-
-//         if (savedPercentage !== null) {
-//             progressBar.style.width = `${savedPercentage}%`;
-
-//             // Set the background color based on saved progress percentage
-//             const progressPercentage = parseFloat(savedPercentage);
-//             if (progressPercentage <= 30) {
-//                 progressBar.style.backgroundColor = 'red';
-//             } else if (progressPercentage > 30 && progressPercentage < 100) {
-//                 progressBar.style.backgroundColor = 'orange';
-//             } else {
-//                 progressBar.style.backgroundColor = 'green';
-//             }
-//         } else {
-//             console.log('No saved progress found');
-//         }
-//     }
-// });
-
-
-
-
-// // Function to add new subtask in edit case
-// function addSubTaskEdit(viewId, taskId) {
-//     const views = JSON.parse(localStorage.getItem('views'));
-//     const view = views[viewId];
-//     const task = view.tasks[taskId];
-//     const subTasks = task.subTasks;
-//     const subTaskCount = subTasks.length;
-
-//     if (subTaskCount >= 8) {
-//         alert('You can add a maximum of 8 subtasks.');
-//         return;
-//     }
-
-//     const subTask = document.createElement('input');
-//     subTask.type = 'text';
-//     subTask.className = 'sub-task-title-add';
-//     subTask.placeholder = 'Subtask Title';
-//     subTask.id = `subTask${subTaskCount + 1}`;
-
-//     const subTaskCheckBox = document.createElement('input');
-//     subTaskCheckBox.type = 'checkbox';
-//     subTaskCheckBox.className = 'sub-task-checkbox-add'; // Ensure this matches the expected class name in getTaskInfo
-
-//     const subTaskIcon = document.createElement('i');
-//     subTaskIcon.className = 'fa-solid fa-trash delete';
-
-//     const subTaskContainer = document.createElement('div');
-//     subTaskContainer.classList.add('row', 'sub-task-info-add'); // Ensure this matches the expected class name in getTaskInfo
-
-//     subTaskContainer.appendChild(subTask);
-//     subTaskContainer.appendChild(subTaskCheckBox);
-//     subTaskContainer.appendChild(subTaskIcon);
-
-//     // Insert the new subtask container into the DOM
-//     const container = document.getElementById('ed-subtasks-container'); // Ensure this ID matches your container
-//     container.appendChild(subTaskContainer);
-// }
-
-
-
-
 
 
 // let views = [
