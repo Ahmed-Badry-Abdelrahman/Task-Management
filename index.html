@@ -87,83 +87,92 @@
                     </div>
                     <div id="views-containers" class="main-content-body-content">
                         <div id="view" class="view">
-        </div>
-    </div>
-    </section>
-
-    <div id="popup-add-task" class="popup">
-        <div class="popup-content">
-            <div class="popup-header">
-                <span class="close-btn-task"><i class="fa-solid fa-square-xmark"></i></span>
-                <h3>Add new task</h3>
-            </div>
-            <div class="tasks-details-container">
-                <div class="task-details">
-                    <input id="task-title-add" type="text" name="task-name" placeholder="Task name" required>
-                    <input id="task-date-add" type="date" name="task-date" placeholder="Task date" required>
-                    <textarea id="task-description-add" rows="8" cols="50"></textarea>
-                    <button id="save-task-btn" class="save-task"><i class="fa-regular fa-floppy-disk"></i>
-                        Save</button>
-                </div>
-                <hr>
-                <div id="subtasks-container-add" class="sub-task">
-                    <div class="sub-task-header">
-                        <h4>Sub tasks (You can add until 8 tasks)</h4>
-                        <button id="add-new-subTask" class="add-task"><i class="fa-solid fa-plus"></i> Add new sub
-                            task</button>
+                        </div>
                     </div>
-                    <div class="row sub-task-info-add first-one">
-                        <input id="subtask0" class="sub-task-title-add" type="text" name="sub-task-name"
-                            placeholder="Sub task name" required />
-                        <input class="sub-task-checkbox-add" type="checkbox" />
-                        <i class="fa-solid fa-trash delete"></i>
+            </section>
+
+            <div id="popup-add-task" class="popup">
+                <div class="popup-content">
+                    <div class="popup-header">
+                        <span class="close-btn-task"><i class="fa-solid fa-square-xmark"></i></span>
+                        <h3>Add new task</h3>
+                    </div>
+                    <div class="tasks-details-container">
+                        <div class="task-details">
+                            <input id="task-title-add" type="text" name="task-name" placeholder="Task name" required>
+                            <input id="task-date-add" type="date" name="task-date" placeholder="Task date" required>
+                            <div class="t-area-btn">
+                                <textarea id="task-description-add" rows="2" cols="50"></textarea>
+                                <button id="save-task-btn" class="save-task"><i class="fa-regular fa-floppy-disk"></i>
+                                    Save</button>
+                            </div>
+                        </div>
+                        <hr>
+                        <div id="subtasks-container-add" class="sub-task">
+                            <div class="sub-task-header">
+                                <h4>Sub tasks (You can add until 8 tasks)</h4>
+                                <button id="add-new-subTask" class="add-task"><i class="fa-solid fa-plus"></i> Add new
+                                    sub
+                                    task</button>
+                            </div>
+                            <div id="sub-task-info-container" class="sub-task-info-container">
+                                <div class="row sub-task-info-add first-one">
+                                    <input id="subtask0" class="sub-task-title-add" type="text" name="sub-task-name"
+                                        placeholder="Sub task name" required />
+                                    <input class="sub-task-checkbox-add" type="checkbox" />
+                                    <i class="fa-solid fa-trash delete"></i>
+                                </div>
+                            </div>
+
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
 
-    <div id="popup-task-edit" class="popup">
-        <div class="popup-content">
-            <div class="popup-header">
-                <span class="close-task"><i class="fa-solid fa-square-xmark"></i></span>
-                <h3 id="ed-task-title" class="task-title">Task title</h3>
-            </div>
-            <div class="tasks-details-container">
-                <div class="task-details">
-                    <input id="ed-task-name" type="text" name="task-name" placeholder="Task name" required>
-                    <input id="ed-task-date" type="date" name="task-date" placeholder="Task date" required>
-                    <textarea id="ed-task-description" rows="8" cols="50"></textarea>
-                    <button id="ed-save-task-btn" class="save-task"><i class="fa-regular fa-floppy-disk"></i>
-                        Save</button>
-                </div>
-                <hr>
-                <div id="ed-subtasks-container" class="sub-task">
-                    <div class="sub-task-header head-div">
-                        <h4>Sub tasks (You can add until 8 tasks)</h4>
-                        <button id="add-new-subTask-ed" class="add-task"><i class="fa-solid fa-plus"></i> Add new sub task</button>
+            <div id="popup-task-edit" class="popup ">
+                <div class="popup-content">
+                    <div class="popup-header">
+                        <span class="close-task"><i class="fa-solid fa-square-xmark"></i></span>
+                        <h3 id="ed-task-title" class="task-title">Task title</h3>
                     </div>
+                    <div class="tasks-details-container">
+                        <div class="task-details">
+                            <input id="ed-task-name" type="text" name="task-name" placeholder="Task name" required>
+                            <input id="ed-task-date" type="date" name="task-date" placeholder="Task date" required>
+                            <div class="t-area-btn">
+                            <textarea id="ed-task-description" rows="8" cols="50"></textarea>
+                            <button id="ed-save-task-btn" class="save-task"><i class="fa-regular fa-floppy-disk"></i>
+                                Save</button>
+                            </div>
+                        </div>
+                        <hr>
+                        <div id="ed-subtasks-container" class="sub-task">
+                            <div class="sub-task-header head-div">
+                                <h4>Sub tasks (You can add until 8 tasks)</h4>
+                                <button id="add-new-subTask-ed" class="add-task"><i class="fa-solid fa-plus"></i> Add
+                                    new sub task</button>
+                            </div>
 
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
 
-    <div id="popup-add-view" class="popup">
-        <div class="popup-content">
-            <div class="popup-header">
-                <span class="close-btn-view"><i class="fa-solid fa-square-xmark"></i></span>
-                <h3 class="task-title">Add view</h3>
+            <div id="popup-add-view" class="popup ">
+                <div class="popup-content add-view">
+                    <div class="popup-header">
+                        <span class="close-btn-view"><i class="fa-solid fa-square-xmark"></i></span>
+                        <h3 class="task-title">Add view</h3>
+                    </div>
+                    <div class="view-title">
+                        <input id="view-title" type="text" name="view-title" placeholder="View title" required />
+                        <button id="save-view-btn" class="save-view"><i class="fa-regular fa-floppy-disk"></i>
+                            save</button>
+                    </div>
+                </div>
             </div>
-            <div class="view-title">
-                <input id="view-title" type="text" name="view-title" placeholder="View title" required />
-                <button id="save-view-btn" class="save-view"><i class="fa-regular fa-floppy-disk"></i>
-                    save</button>
-            </div>
-        </div>
-    </div>
 
-    </div>
+        </div>
     </div>
 
 

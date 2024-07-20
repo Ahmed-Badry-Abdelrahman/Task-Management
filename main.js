@@ -102,7 +102,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
         if (lastSubTaskId === 'subTask7') {
             return;
         } else {
-            addSubTask('subtasks-container-add');
+            addSubTask('sub-task-info-container');
         }
     })
 
@@ -480,6 +480,11 @@ function displayTaskInformation(taskId, viewId) {
     document.getElementById('ed-task-date').value = task.date || '';
     document.getElementById('ed-task-description').value = task.description || '';
 
+    const edSubTaskInfoContainer = document.createElement('div')
+    edSubTaskInfoContainer.classList.add('ed-subtask-info-container');
+    edSubTaskInfoContainer.id = 'ed-subtask-info-container';
+
+    subTasksContainer.appendChild(edSubTaskInfoContainer)
     // Loop through subtasks and populate values
     task.subTasks.forEach((subTask, index) => {
         const subTaskContainer = document.createElement('div');
@@ -501,7 +506,7 @@ function displayTaskInformation(taskId, viewId) {
         subTaskIcon.className = 'fa-solid fa-trash delete';
         subTaskContainer.appendChild(subTaskIcon);
 
-        subTasksContainer.appendChild(subTaskContainer);
+        edSubTaskInfoContainer.appendChild(subTaskContainer);
     });
 }
 
