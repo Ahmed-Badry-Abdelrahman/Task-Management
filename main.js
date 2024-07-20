@@ -14,6 +14,7 @@ document.querySelectorAll('.top-bar-items').forEach(item => {
 
 ////////////////////////////////////////////////
 let viewId;
+let subTaskIndex;
 
 // Ensure DOM is loaded before adding event listeners
 document.addEventListener('DOMContentLoaded', (event) => {
@@ -131,6 +132,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
         const popupTaskEdit = document.getElementById('popup-task-edit');
         const viewIdContainTask = popupTaskEdit.getAttribute('viewIdContainTask');
         const taskId = popupTaskEdit.getAttribute('taskId');
+        // deleteSubTaskFromView(viewId, taskId, subTaskId)
         updateTask(viewIdContainTask, taskId);
         // Close the popup
         document.getElementById('popup-task-edit').style.display = 'none';
@@ -141,9 +143,34 @@ document.addEventListener('DOMContentLoaded', (event) => {
     document.getElementById('save-task-btn').addEventListener('click', () => {
         if (viewId !== null) {
             getTaskInfo(viewId);
-            displayTasks(viewId, );
+            displayTasks(viewId,);
         }
     });
+
+    // document.getElementById('popup-task-edit').addEventListener('click', (event) => {
+    //     const deleteIcons = document.querySelectorAll('.deleteIcon')
+    //     // if (event.target.closest('#add-new-task')) {
+    //     //     viewId = getViewContainingButton(event.target);
+    //     //     popupForNewTask.style.display = 'block';
+    //     // }
+    //     deleteIcons.forEach((icon, index) => {
+    //         if (event.target.closest('.deleteIcon')) {
+    //             const taskId = icon.getAttribute('taskId');
+    //             const viewIdContainTask = icon.getAttribute('viewIdContainTask');
+    //             console.log(taskId, viewIdContainTask)
+    //             console.log('clicked')
+    //             deleteTask(viewIdContainTask, taskId);
+    //             }
+    //     })
+    // });
+
+    // document.getElementById('popup-add-task').addEventListener('click', (event) => {
+    //     if (event.target.closest('#add-new-task')) {
+    //         viewId = getViewContainingButton(event.target);
+    //         popupForNewTask.style.display = 'block';
+    //     }
+    // });
+
 });
 
 
@@ -238,10 +265,9 @@ function getTaskInfo(viewId) {
             const totalSubTasks = subTasks.length;
             const completedSubTasks = this.subTasks.filter(subTask => subTask.status === true).length;
             const progressPercentage = totalSubTasks === 0 ? 0 : (completedSubTasks / totalSubTasks) * 100;
-            return progressPercentage
+            return progressPercentage;
         }
     };
-
 
     // Fetch the view from local storage
     const views = JSON.parse(localStorage.getItem('views')) || [];
@@ -253,15 +279,11 @@ function getTaskInfo(viewId) {
     // Optionally, you could add the task to the view and update local storage
     if (view) {
         if (!view.tasks) {
-            // create the array will contain tasks objects if its the first task added
-            view.tasks = [];
+            view.tasks = []; // Create tasks array if not exists
         }
-        // push tasks to the view
         view.tasks.push(task);
-        // update this view in the views array
-        views[viewId] = view;
-        // update local storage
-        localStorage.setItem('views', JSON.stringify(views));
+        views[viewId] = view; // Update view in the views array
+        localStorage.setItem('views', JSON.stringify(views)); // Update local storage
     }
 
     // Clear fields
@@ -276,21 +298,16 @@ function getTaskInfo(viewId) {
     // Close the popup
     document.getElementById('popup-add-task').style.display = 'none';
 
-    // remove the new subtasks that is add 
+    // Remove the new subtasks that were added
     subTasksElements.forEach(subTask => {
         if (!subTask.classList.contains('first-one')) {
             subTask.remove();
         }
     });
 
-    // Handle progress bar
-    // updateProgressBar(subTasks);
+    // Display updated tasks
+    displayTasks(viewId, task.checkedTasks);
 }
-
-
-
-
-
 
 // Function to display tasks in the specific view
 function displayTasks(viewId, progressPercentage) {
@@ -310,13 +327,11 @@ function displayTasks(viewId, progressPercentage) {
     tasks.forEach((task, index) => {
         const { title, description, date, subTasks } = task;
         const numOfCheckedTasks = subTasks.filter(subTask => subTask.status).length;
-        const numOfSubTasks = subTasks.length
+        const numOfSubTasks = subTasks.length;
         console.log(`Task ${index}:`, task);
         console.log(`Number of completed sub-tasks: ${numOfCheckedTasks}`);
 
         createTaskCard(viewId, title, description, date, index, numOfCheckedTasks, numOfSubTasks, progressPercentage);
-
-
     });
 }
 
@@ -489,6 +504,7 @@ function displayTaskInformation(taskId, viewId) {
     task.subTasks.forEach((subTask, index) => {
         const subTaskContainer = document.createElement('div');
         subTaskContainer.classList.add('row', 'sub-task-info-add');
+        subTaskContainer.id = index
 
         const subTaskInput = document.createElement('input');
         subTaskInput.type = 'text';
@@ -503,7 +519,17 @@ function displayTaskInformation(taskId, viewId) {
         subTaskContainer.appendChild(subTaskCheckBox);
 
         const subTaskIcon = document.createElement('i');
-        subTaskIcon.className = 'fa-solid fa-trash delete';
+        subTaskIcon.className = 'fa-solid fa-trash delete deleteIcon'
+
+        // Add onclick function
+        subTaskIcon.onclick = () => {
+            // Your custom action here
+            console.log(taskId, viewId)
+            subTaskIndex = index; // Returns the index of the task
+            // For example, remove the subTaskContainer
+            subTaskContainer.remove();
+        };
+
         subTaskContainer.appendChild(subTaskIcon);
 
         edSubTaskInfoContainer.appendChild(subTaskContainer);
@@ -525,7 +551,7 @@ function addSubTask(containerId) {
     subTaskCheckBox.className = 'sub-task-checkbox-add'; // Ensure this matches the expected class name in getTaskInfo
 
     const subTaskIcon = document.createElement('i');
-    subTaskIcon.className = 'fa-solid fa-trash delete';
+    subTaskIcon.className = 'fa-solid fa-trash delete deleteIcon';
 
     const subTaskContainer = document.createElement('div');
     subTaskContainer.classList.add('row', 'sub-task-info-add'); // Ensure this matches the expected class name in getTaskInfo
@@ -583,14 +609,20 @@ function updateTask(viewIndex, taskIndex) {
     task.title = taskTitle;
     task.description = taskDescription;
     task.dueDate = taskDueDate;
-    task.subTasks.forEach((subTask, index) => {
-        subTask.title = taskSubTasks[index].title;
-        subTask.status = taskSubTasks[index].checked;
-    })
+
+    // Update the sub-tasks
+    task.subTasks = taskSubTasks.map((subTask, index) => {
+        const existingSubTask = task.subTasks[index] || {};
+        return {
+            ...existingSubTask,
+            title: subTask.title,
+            status: subTask.checked
+        };
+    });
 
     // Save the updated views back to localStorage
     localStorage.setItem('views', JSON.stringify(views));
-    displayViews()
+    displayViews();
 }
 
 // Function to get the subtasks
@@ -637,6 +669,27 @@ function updateProgressBar(progressPercentage) {
         progressBar.style.backgroundColor = 'green';
     }
 }
+
+// function to delete sub task from specific view and specific task 
+function deleteSubTaskFromView(viewId, taskId, subTaskId) {
+    const views = JSON.parse(localStorage.getItem('views'))
+    const view = views[viewId]
+    const tasks = view.tasks
+    const task = tasks[taskId]
+    const subTasks = task.subTasks
+    const subTaskIndex = subTaskId
+    subTasks.splice(subTaskIndex, 1)
+    localStorage.setItem('views', JSON.stringify(views))
+}
+
+
+
+
+
+
+
+
+
 
 // document.addEventListener('DOMContentLoaded', () => {
 
